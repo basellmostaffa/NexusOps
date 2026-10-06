@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nexusops
+      POSTGRES_PASSWORD: nexusops
+      POSTGRES_DB: nexusops
+    ports:
+      - "5432:5432"
+    volumes:
+      - nexusops-postgres:/var/lib/postgresql/data
+
+volumes:
+  nexusops-postgres:
