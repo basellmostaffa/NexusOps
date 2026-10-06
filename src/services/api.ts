@@ -20,9 +20,19 @@ api.interceptors.response.use((response) => response, (error) => {
 })
 
 export type ApiCustomer = { id: string; name: string; email: string; phone: string | null; company: string | null; status: string; createdAt: string }
-export type ApiProduct = { id: string; name: string; category?: string; price: number; stock: number; status?: string; createdAt: string }
+export type ApiProduct = { id: string; name: string; sku?: string; category?: string; price: number; stock: number; status?: string; createdAt: string }
 export type ApiOrder = { id: string; total: number; status: string; createdAt: string; customer: { name: string }; items?: Array<{ quantity: number; product: { name: string } }> }
-export type Overview = { customers: number; products: number; orders: number; revenue: number; orderStatuses: Array<{ status: string; _count: { _all: number } }> }
+export type Overview = {
+  customers: number
+  products: number
+  orders: number
+  revenue: number
+  orderStatuses: Array<{ status: string; count: number }>
+  revenueOverTime: Array<{ date: string; revenue: number; orders: number }>
+  customerGrowth: Array<{ date: string; newCustomers: number }>
+  topProducts: Array<{ id?: string; name?: string; quantity: number; orders: number }>
+  recentOrders: ApiOrder[]
+}
 
 export async function login(email: string, password: string) {
   const response = await api.post<{ token: string; user: { id: string; name: string; email: string; avatar: string | null; createdAt: string } }>('/auth/login', { email, password })
@@ -36,5 +46,10 @@ export async function getProducts() {
 
 export async function getOverview() {
   const response = await api.get<Overview>('/analytics/overview')
+  return response.data
+}
+
+export async function getAnalytics(days = 30) {
+  const response = await api.get<Overview>('/analytics/overview', { params: { days } })
   return response.data
 }

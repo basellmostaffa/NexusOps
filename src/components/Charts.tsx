@@ -1,9 +1,9 @@
 import { Area, AreaChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { customerGrowth, revenueData } from '../data'
 
-export function RevenueChart({ compact = false }: { compact?: boolean }) {
+export function RevenueChart({ compact = false, data = revenueData }: { compact?: boolean; data?: Array<{ month: string; revenue: number; target?: number }> }) {
   return <ResponsiveContainer width="100%" height={compact ? 190 : 275}>
-    <AreaChart data={revenueData} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
+    <AreaChart data={data} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
       <defs><linearGradient id="fillRevenue" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#f9735b" stopOpacity={0.18} /><stop offset="100%" stopColor="#f9735b" stopOpacity={0} /></linearGradient></defs>
       <CartesianGrid vertical={false} stroke="var(--chart-grid)" />
       <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--muted)', fontSize: 12 }} />
@@ -14,9 +14,9 @@ export function RevenueChart({ compact = false }: { compact?: boolean }) {
     </AreaChart>
   </ResponsiveContainer>
 }
-export function GrowthChart({ compact = false }: { compact?: boolean }) {
+export function GrowthChart({ compact = false, data = customerGrowth }: { compact?: boolean; data?: Array<{ month: string; value: number }> }) {
   return <ResponsiveContainer width="100%" height={compact ? 190 : 275}>
-    <LineChart data={customerGrowth} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
+    <LineChart data={data} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
       <CartesianGrid vertical={false} stroke="var(--chart-grid)" />
       <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--muted)', fontSize: 12 }} />
       <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--muted)', fontSize: 12 }} />
